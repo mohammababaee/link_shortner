@@ -3,7 +3,6 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr, field_validator
 
 class User(BaseModel):
-    id: Optional[str] = None
     email: EmailStr
     salt:Optional[str] = None
     hashed_password: str
