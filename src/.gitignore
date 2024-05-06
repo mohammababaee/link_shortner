@@ -1,0 +1,18 @@
+# Ignore VS Code settings
+.vscode/
+
+# Ignore Python bytecode files
+__pycache__/
+
+# Ignore environment variables file
+.env
+
+# Ignore MongoDB data directory
+/data/
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore FastAPI generated files
+__pycache__/
