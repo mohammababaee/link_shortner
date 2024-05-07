@@ -9,20 +9,23 @@ import string
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def verify_password(plain_password,salt, hashed_password):
+
+def verify_password(plain_password, salt, hashed_password):
     return pwd_context.verify(plain_password + salt, hashed_password)
 
-def get_password_hash(password,salt):
-    return pwd_context.hash(password+ salt)
+
+def get_password_hash(password, salt):
+    return pwd_context.hash(password + salt)
 
 
 async def authenticate_user(email: str, password: str):
     user = users_collection.find_one({"email": email})
     if not user:
         return False
-    if not verify_password(password, user["salt"],user["hashed_password"]):
+    if not verify_password(password, user["salt"], user["hashed_password"]):
         return False
     return user
+
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -41,4 +44,4 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 def generate_salt(length: int = 16) -> str:
     """Generate a random salt."""
     characters = string.ascii_letters + string.digits + string.punctuation
-    return ''.join(secrets.choice(characters) for _ in range(length))
+    return "".join(secrets.choice(characters) for _ in range(length))

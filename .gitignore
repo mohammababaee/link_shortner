@@ -8,6 +8,7 @@ __pycache__/
 # Python virtual environments
 venv/
 env/
+.env
 
 # SQLite database files
 *.db
@@ -17,3 +18,4 @@ env/
 
 # Temporary files
 *.tmp
+
