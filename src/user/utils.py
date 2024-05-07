@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from database import users_collection
+from src.database import users_collection
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from dotenv import load_dotenv

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from link_shortner.router import router as link_router
-from user.router import router as user_router
+from src.link_shortner.router import router as link_router
+from src.user.router import router as user_router
 
 app = FastAPI()
 

@@ -3,9 +3,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from os import getenv
-from database import users_collection
-from user.models import User
-from user.utils import (
+from src.database import users_collection
+from src.user.models import User
+from src.user.utils import (
     authenticate_user,
     create_access_token,
     generate_salt,

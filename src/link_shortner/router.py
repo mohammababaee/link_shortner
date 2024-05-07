@@ -1,10 +1,10 @@
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from starlette.responses import RedirectResponse
-from link_shortner.models import Link
-from link_shortner.utils import generate_random_code, is_valid_url, link_validate
-from database import link_collection, users_collection
-from user.utils import get_current_user
+from src.link_shortner.models import Link
+from src.link_shortner.utils import generate_random_code, is_valid_url, link_validate
+from src.database import link_collection, users_collection
+from src.user.utils import get_current_user
 
 router = APIRouter()
 

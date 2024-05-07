@@ -18,8 +18,8 @@ def generate_random_code(length=5):
 
 
 def is_valid_url(url):
-
     url_pattern = re.compile(
-        r"^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", re.IGNORECASE
+        r"^(https?://)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z0-9-\.]+)([/\?]?[a-zA-Z0-9-_+%&=\.\(\)\\#]*)*/?$",
+        re.IGNORECASE
     )
     return re.match(url_pattern, url) is not None
