@@ -19,7 +19,10 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post("/register")
+@router.post(
+    "/register",
+    tags=["user"],
+)
 async def register_user(email: str, password: str):
     user_exist = users_collection.find_one({"email": email})
     if user_exist:
@@ -41,7 +44,10 @@ async def register_user(email: str, password: str):
     }
 
 
-@router.post("/login")
+@router.post(
+    "/token",
+    tags=["user"],
+)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:

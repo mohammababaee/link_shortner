@@ -8,7 +8,7 @@ def link_validate(link: str):
     return link
 
 
-def generate_random_code(length=6):
+def generate_random_code(length=5):
     """
     Generate a random Base58 code of specified length.
     """
