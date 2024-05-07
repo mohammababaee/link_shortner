@@ -3,9 +3,13 @@ from src.main import app
 import json
 import pytest
 from pymongo import MongoClient
+import pytest
+from datetime import datetime
+from src.link_shortener.models import Link
+from pydantic import ValidationError
+
 
 client = TestClient(app)
-
 
 @pytest.fixture(scope="module")
 def test_db():
@@ -19,7 +23,28 @@ def test_db():
     client.close()
 
 
+def test_link_model_validation():
+    # Valid data
+    valid_data = {
+        "link": "https://example.com",
+        "shortned_link": "abc123",
+        "created_date": datetime.now(),
+        "clicked": 0,
+        "user_id": None
+    }
 
+    # Test valid data
+    link = Link(**valid_data)
+    assert link.link == valid_data["link"]
+    assert link.shortned_link == valid_data["shortned_link"]
+    assert link.created_date == valid_data["created_date"]
+    assert link.clicked == valid_data["clicked"]
+    assert link.user_id == valid_data["user_id"]
+
+    # Test link length validation
+    with pytest.raises(ValidationError) as exc_info:
+        Link(link="https://" + "a" * 1001, shortned_link="abc123", created_date=datetime.now())
+    assert "Link must be at most 500 characters long" in str(exc_info.value)
 
 
 def test_routes_with_mock_db(test_db):
