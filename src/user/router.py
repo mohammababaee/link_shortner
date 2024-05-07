@@ -20,14 +20,11 @@ async def register_user(email: str, password: str):
     user_exist = users_collection.find_one({"email": email})
     if user_exist:
         raise HTTPException(status_code=400, detail="Email already registered")
-    salt = generate_salt()
+    salt = generate_salt() # The salt enhances the reliability of the hashing function by adding randomness to each password hash.
     hashed_password = get_password_hash(password,salt)
-    user_id = str(uuid.uuid4())
-    while users_collection.find_one({"id": user_id}):
-        user_id = str(uuid.uuid4())
-    user = User(email=email, hashed_password=hashed_password,salt=salt, id=user_id,created_date=datetime.now())
-    users_collection.insert_one(user.dict(by_alias=True))
-    return {"message": "User registered successfully", "user_details": user.dict()}
+    user = User(email=email, hashed_password=hashed_password,salt=salt,created_date=datetime.now())
+    users_collection.insert_one(user.model_dump(by_alias=True))
+    return {"message": "User registered successfully", "user_details": user.model_dump()}
 
 
 @router.post("/login")
