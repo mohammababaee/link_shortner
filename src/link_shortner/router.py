@@ -2,7 +2,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from starlette.responses import RedirectResponse
 from link_shortner.models import Link
-from link_shortner.utils import generate_random_code, link_validate
+from link_shortner.utils import generate_random_code, is_valid_url, link_validate
 from database import link_collection, users_collection
 from user.utils import get_current_user
 
@@ -10,13 +10,16 @@ router = APIRouter()
 
 
 @router.post(
-    "/shorten",
+    "/shorten/",
     tags=["link"],
 )
 async def create_short_link(link: str, current_user: str = Depends(get_current_user)):
     """
     Endpoint to shorten a given link.
     """
+    is_valid = is_valid_url(link)
+    if not is_valid:
+        raise HTTPException(status_code=400, detail=str("Link is invalid. try again"))
     try:
         url = link_validate(link)
         # Generate a random Base58 code
@@ -41,7 +44,6 @@ async def create_short_link(link: str, current_user: str = Depends(get_current_u
         return {
             "message": "Link shortened successfully",
             "shortened_link": shortened_link_str,
-            "link_detail": shortened_link,
         }
     except ValueError as ve:
         raise HTTPException(

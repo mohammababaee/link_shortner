@@ -1,5 +1,6 @@
 import random
 import string
+import re
 
 
 def link_validate(link: str):
@@ -14,3 +15,11 @@ def generate_random_code(length=5):
     """
     characters = string.ascii_letters + string.digits
     return "".join(random.choice(characters) for _ in range(length))
+
+
+def is_valid_url(url):
+
+    url_pattern = re.compile(
+        r"^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", re.IGNORECASE
+    )
+    return re.match(url_pattern, url) is not None

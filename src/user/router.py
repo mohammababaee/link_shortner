@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -19,10 +19,7 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post(
-    "/register",
-    tags=["user"],
-)
+@router.post("/register", tags=["user"], status_code=status.HTTP_201_CREATED)
 async def register_user(email: str, password: str):
     user_exist = users_collection.find_one({"email": email})
     if user_exist:
@@ -39,8 +36,7 @@ async def register_user(email: str, password: str):
     )
     users_collection.insert_one(user.model_dump(by_alias=True))
     return {
-        "message": "User registered successfully",
-        "user_details": user.model_dump(),
+        "message": "User registered successfully!",
     }
 
 
