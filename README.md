@@ -55,7 +55,7 @@ The main choice for JWT Authentication was because we don't store user data in t
 
 Currently, this is our architecture:
 
-![Database Diagram](images/First%20design.PNG)
+![Our Design Diagram](images/First%20design.PNG)
 
 ## Improvements and Scalability
 
@@ -72,7 +72,11 @@ Again, we shouldn't have a single point of failure, so we need some instances of
 Also, we need a caching mechanism, and we need multiple instances of the database (we can store data based on what alphabet they start with).
 
 
-![Database Diagram](images/second_design.PNG)
+In addition we can add rate limiters for preventing too much load on our servers
+
+
+
+![Best Design Diagram](images/second_design.PNG)
 
 ## What to Add Next?
 
