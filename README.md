@@ -35,8 +35,9 @@ I decided to use MongoDB because:
 
 1. We have more reads than writes (likely around a 50:1 ratio).
 2. We don't have complicated relationships, and we only have two main databases, as shown in the picture above.
-3. We don't require complicated queries.
-4. It's highly scalable and can be a good choice if we want to scale horizontally.
+![Database](images/Database.PNG)
+1. We don't require complicated queries.
+2. It's highly scalable and can be a good choice if we want to scale horizontally.
 
 ### FastAPI
 
