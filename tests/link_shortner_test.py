@@ -7,6 +7,42 @@ import pytest
 from datetime import datetime
 from src.link_shortener.models import Link
 from pydantic import ValidationError
+import pytest
+from src.link_shortner.utils import is_valid_url, link_validate
+
+
+@pytest.mark.parametrize(
+    "url, expected",
+    [
+        ("http://example.com", True),
+        ("https://example.com", True),
+        ("http://www.example.com", True),
+        ("https://www.example.com", True),
+        ("http://example.com/path", True),
+        ("https://example.com/path", True),
+        ("http://example.com/path?query=param", True),
+        ("https://example.com/path?query=param", True),
+        ("http://example.com/path#fragment", True),
+        ("https://example.com/path#fragment", True),
+        ("example.com", True),
+        ("http://", False),
+        ("https://", False),
+        ("http://example", False),
+        ("https://example", False),
+        ("http://example.", False),
+        ("https://example.", False),
+        ("http://.com", False),
+        ("https://.com", False),
+    ],
+)
+def test_is_valid_url(url, expected):
+    assert is_valid_url(url) == expected
+
+
+def test_link_validate():
+    assert link_validate("example.com") == "http://example.com"
+    assert link_validate("http://example.com") == "http://example.com"
+    assert link_validate("https://example.com") == "https://example.com"
 
 
 client = TestClient(app)
