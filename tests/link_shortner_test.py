@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 client = TestClient(app)
 
+
 @pytest.fixture(scope="module")
 def test_db():
     # Set up mock database
@@ -30,7 +31,7 @@ def test_link_model_validation():
         "shortned_link": "abc123",
         "created_date": datetime.now(),
         "clicked": 0,
-        "user_id": None
+        "user_id": None,
     }
 
     # Test valid data
@@ -43,27 +44,43 @@ def test_link_model_validation():
 
     # Test link length validation
     with pytest.raises(ValidationError) as exc_info:
-        Link(link="https://" + "a" * 1001, shortned_link="abc123", created_date=datetime.now())
+        Link(
+            link="https://" + "a" * 1001,
+            shortned_link="abc123",
+            created_date=datetime.now(),
+        )
     assert "Link must be at most 500 characters long" in str(exc_info.value)
 
 
 def test_routes_with_mock_db(test_db):
     # Register a user
-    register_response = client.post("/register", json={"email": "test@example.com", "password": "testpassword"})
+    register_response = client.post(
+        "/register", json={"email": "test@example.com", "password": "testpassword"}
+    )
     assert register_response.status_code == 201
 
     # Obtain an access token
-    token_response = client.post("/token", data={"username": "test@example.com", "password": "testpassword"})
+    token_response = client.post(
+        "/token", data={"username": "test@example.com", "password": "testpassword"}
+    )
     assert token_response.status_code == 200
     token_data = token_response.json()
     access_token = token_data["access_token"]
 
     # Test create_short_link with authentication
-    response = client.post("/shorten/", json={"link": "https://example.com"}, headers={"Authorization": f"Bearer {access_token}"})
+    response = client.post(
+        "/shorten/",
+        json={"link": "https://example.com"},
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
     assert response.status_code == 200
     assert "shortened_link" in response.json()
 
-    response = client.post("/shorten/", json={"link": "invalid-url"}, headers={"Authorization": f"Bearer {access_token}"})
+    response = client.post(
+        "/shorten/",
+        json={"link": "invalid-url"},
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
     assert response.status_code == 400
 
     # Test redirect_to_path

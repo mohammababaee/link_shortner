@@ -12,6 +12,12 @@ The functionality is simple:
 
 Additionally, the app includes JWT authentication.
 
+# Non-functional aspects
+
+- **High Availability**: Our system must ensure high availability to allow users to access their links at any time without interruption.
+- **Efficiency in Link Shortening**: Our links must be efficiently shortened while maintaining readability for users.
+- **Scalability**: Our system should be designed to scale horizontally to accommodate the potentially unlimited number of links to be stored.
+
 ## Implementation and Usage
 
 To implement and use this app:
@@ -25,7 +31,7 @@ To implement and use this app:
 
 ### MongoDB
 
-First, I decided to use MongoDB because:
+I decided to use MongoDB because:
 
 1. We have more reads than writes (likely around a 50:1 ratio).
 2. We don't have complicated relationships, and we only have two main databases, as shown in the picture above.
@@ -49,6 +55,8 @@ The main choice for JWT Authentication was because we don't store user data in t
 
 Currently, this is our architecture:
 
+![Database Diagram](images/First%20design.PNG)
+
 ## Improvements and Scalability
 
 Our app is not scalable at the moment, but we can add some functionality to make it scalable. One of the most important parts is that currently, we have a Single Point of Failure (SPOF). If our server goes down, we can't do anything, so what should we do?
@@ -63,6 +71,8 @@ Again, we shouldn't have a single point of failure, so we need some instances of
 
 Also, we need a caching mechanism, and we need multiple instances of the database (we can store data based on what alphabet they start with).
 
+
+![Database Diagram](images/second_design.PNG)
 
 ## What to Add Next?
 
